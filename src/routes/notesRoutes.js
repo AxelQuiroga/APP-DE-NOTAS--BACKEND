@@ -64,7 +64,7 @@ router.put("/:id",async(req,res)=>{
         
         const updateData = await Note.findByIdAndUpdate(id,{title,description},{returnDocument:'after'})
         if (!updateData) return res.status(404).json({error:"Nota no encontrada."})
-        res.status(201).json({message:"Note updated succesfully",updateData})
+        res.status(200).json({message:"Note updated succesfully",updateData})
         } catch (error) {
         console.error("Error al actualizar nota",error)
         res.status(500).json({error:"Internal server error"})
