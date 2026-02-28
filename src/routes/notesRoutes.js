@@ -30,8 +30,8 @@ router.get("/:id",async(req,res)=>{
 //crear una nueva nota
 router.post("/",async(req,res) =>{
     try {
-        const {title,description} = req.body
-        const note = new Note({title,description})
+        const {title,description,email,phone} = req.body
+        const note = new Note({title,description,email,phone})
         const savedNote = await note.save()
         if(savedNote){
             res.status(201).json({message: "Note created succesfully",note: savedNote})
@@ -60,9 +60,9 @@ router.delete("/:id",async(req,res) =>{
 router.put("/:id",async(req,res)=>{
     try {
         const id = req.params.id
-        const {title,description} = req.body
+        const {title,description,email,phone} = req.body
         
-        const updateData = await Note.findByIdAndUpdate(id,{title,description},{returnDocument:'after'})
+        const updateData = await Note.findByIdAndUpdate(id,{title,description,email,phone},{returnDocument:'after'})
         if (!updateData) return res.status(404).json({error:"Nota no encontrada."})
         res.status(200).json({message:"Note updated succesfully",updateData})
         } catch (error) {
