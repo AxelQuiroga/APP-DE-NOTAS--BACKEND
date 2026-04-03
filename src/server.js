@@ -3,6 +3,8 @@ import notesRouter from "./routes/notesRoutes.js"
 import dotenv from "dotenv"
 import { connectDB } from "./config/db.js"
 import cors from "cors"
+import notFound from "./middlewares/notFound.js";
+import errorHandler from "./middlewares/errorHandler.js";
 
 dotenv.config()
 const app = express()
@@ -16,6 +18,8 @@ app.use(express.json())
 
 app.use("/api/notes",notesRouter)
 
+app.use(notFound);
+app.use(errorHandler);
 const PORT = process.env.PORT || 3001
 
 connectDB()
