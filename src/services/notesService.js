@@ -5,30 +5,19 @@ export default class NotesService {
     constructor() {
         this.notesRepository = new NotesRepository();
     }
-    async getAllNotes() {
-        return this.notesRepository.findAll();
+    async getAllNotes(userId) {
+        return this.notesRepository.findAllByUser(userId);
     }
-    async getNoteById(id) {
-        return this.notesRepository.findById(id);
+    async getNoteById(id, userId) {
+        return this.notesRepository.findByIdAndUser(id, userId);
     }
     async createNote(data) {
-        const existing = await this.notesRepository.findByEmail(data.email);
-        if (existing) {
-            throw new AppError("Email ya registrado", 409);
-        }
         return this.notesRepository.create(data);
     }
-    async deleteNote(id) {
-        return this.notesRepository.deleteById(id);
+    async deleteNote(id, userId) {
+        return this.notesRepository.deleteByIdAndUser(id, userId);
     }
-    async updateNote(id, data) {
-        if (data.email) {
-            const existing = await this.notesRepository.findByEmailExcludingId(data.email, id);
-            if (existing) {
-                throw new AppError("Email ya registrado", 409);
-            }
-        }
-
-        return this.notesRepository.updateById(id, data);
+    async updateNote(id, data, userId) {
+        return this.notesRepository.updateByIdAndUser(id, data, userId);
     }
 }

@@ -13,7 +13,8 @@ export default class NotesController {
     }
     async getAllNotes(req, res, next) {
         try {
-            const notes = await this.notesService.getAllNotes();
+            const userId = req.user._id;
+            const notes = await this.notesService.getAllNotes(userId);
             res.status(200).json(notes)
         } catch (error) {
             console.error("Error al devolver las notas", error)
@@ -25,7 +26,8 @@ export default class NotesController {
 
         try {
             const id = req.params.id
-            const note = await this.notesService.getNoteById(id);
+            const userId = req.user._id;
+            const note = await this.notesService.getNoteById(id, userId);
             if (!note) return res.status(404).json({ error: "Nota no encontrada" })
             res.status(200).json(note)
         } catch (error) {
@@ -37,9 +39,10 @@ export default class NotesController {
     async createNote(req, res, next) {
 
         try {
-            const { title, description, email, phone } = req.body;
+            const { title, description } = req.body;
+            const userId = req.user._id;
 
-            const savedNote = await this.notesService.createNote({ title, description, email, phone });
+            const savedNote = await this.notesService.createNote({ title, description, user: userId });
             if (savedNote) {
                 res.status(201).json({ message: "Note created succesfully", note: savedNote })
             }
@@ -53,8 +56,9 @@ export default class NotesController {
     async deleteNote(req, res, next) {
         try {
             const id = req.params.id
-            const note = await this.notesService.deleteNote(id);
-            if (!note) return res.status(404).json({ error: "Nota no encontrada" })
+            const userId = req.user._id;
+            const note = await this.notesService.deleteNote(id, userId);
+            if (!note) return res.status(404).json({ error: "Nota no encontrada o no pertenece al usuario" })
             res.status(200).json({ message: "Note eliminated successfully" })
         } catch (error) {
             console.error("Error al eliminar la nota", error)
@@ -66,9 +70,10 @@ export default class NotesController {
 
         try {
             const id = req.params.id
-            const { title, description, email, phone } = req.body
+            const { title, description } = req.body
+            const userId = req.user._id;
 
-            const updateData = await this.notesService.updateNote(id, { title, description, email, phone });
+            const updateData = await this.notesService.updateNote(id, { title, description }, userId);
             if (!updateData) return res.status(404).json({ error: "Nota no encontrada." })
             res.status(200).json({ message: "Note updated succesfully", updateData })
         } catch (error) {

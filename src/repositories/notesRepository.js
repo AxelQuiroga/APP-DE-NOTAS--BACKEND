@@ -1,20 +1,12 @@
 import Note from "../models/noteModel.js";
 
 export default class NotesRepository {
-  async findAll() {
-    return Note.find();
+  async findAllByUser(userId) {
+    return Note.find({ user: userId });
   }
 
-  async findById(id) {
-    return Note.findById(id);
-  }
-
-  async findByEmail(email) {
-    return Note.findOne({ email });
-  }
-
-  async findByEmailExcludingId(email, id) {
-    return Note.findOne({ email, _id: { $ne: id } });
+  async findByIdAndUser(id, userId) {
+    return Note.findOne({ _id: id, user: userId });
   }
 
   async create(data) {
@@ -22,11 +14,11 @@ export default class NotesRepository {
     return note.save();
   }
 
-  async deleteById(id) {
-    return Note.findByIdAndDelete(id);
+  async deleteByIdAndUser(id, userId) {
+    return Note.findOneAndDelete({ _id: id, user: userId });
   }
 
-  async updateById(id, data) {
-    return Note.findByIdAndUpdate(id, data, { returnDocument: "after" });
+  async updateByIdAndUser(id, data, userId) {
+    return Note.findOneAndUpdate({ _id: id, user: userId }, data, { returnDocument: "after" });
   }
 }

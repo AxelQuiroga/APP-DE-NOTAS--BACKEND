@@ -5,6 +5,7 @@ import { connectDB } from "./config/db.js"
 import cors from "cors"
 import notFound from "./middlewares/notFound.js";
 import errorHandler from "./middlewares/errorHandler.js";
+import authRouter from "./routes/authRoutes.js"
 
 dotenv.config()
 const app = express()
@@ -16,6 +17,7 @@ app.use(cors({
 
 app.use(express.json())
 
+app.use("/api/auth", authRouter)
 app.use("/api/notes",notesRouter)
 
 app.use(notFound);

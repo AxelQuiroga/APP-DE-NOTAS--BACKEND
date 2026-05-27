@@ -15,19 +15,10 @@ const noteSchema = new mongoose.Schema({
         minlength:6,
         maxlength:110
     },
-    email:{
-        type: String,
-        required: true,
-        lowercase:  true,
-        trim: true,
-        unique: true,
-        match: [/^\S+@\S+\.\S+$/, 'Email inválido']
-    },
-    phone:{
-        type:String,
-        required: true,
-        trim: true,
-        match: [/^\+?[0-9\s-]{8,20}$/, 'Número inválido']
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
     }
 },{timestamps: true})
 
