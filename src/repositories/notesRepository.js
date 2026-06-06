@@ -19,6 +19,10 @@ export default class NotesRepository {
   }
 
   async updateByIdAndUser(id, data, userId) {
-    return Note.findOneAndUpdate({ _id: id, user: userId }, data, { returnDocument: "after" });
+    return Note.findOneAndUpdate(
+      { _id: id, user: userId },
+      data,
+      { new: true, runValidators: true }
+    );
   }
 }

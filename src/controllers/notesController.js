@@ -29,7 +29,7 @@ export default class NotesController {
             const userId = req.user._id;
             const note = await this.notesService.getNoteById(id, userId);
             if (!note) return res.status(404).json({ error: "Nota no encontrada" })
-            res.status(200).json(note)
+            res.status(200).json({ note })
         } catch (error) {
             console.error("Error al obtener nota por id", error)
             next(error);
@@ -75,7 +75,7 @@ export default class NotesController {
 
             const updateData = await this.notesService.updateNote(id, { title, description }, userId);
             if (!updateData) return res.status(404).json({ error: "Nota no encontrada." })
-            res.status(200).json({ message: "Note updated succesfully", updateData })
+            res.status(200).json({ message: "Note updated succesfully", note: updateData })
         } catch (error) {
             console.error("Error al actualizar nota", error)
             next(error);

@@ -9,19 +9,11 @@ export default class AuthController {
 
     async register(req, res, next) {
         try {
-            console.log('authController.register called. typeof next =', typeof next);
-            console.log('body:', req.body);
             const { name, email, phone, password } = req.body;
             const userData = await this.authService.register({ name, email, phone, password });
             res.status(201).json(userData);
         } catch (error) {
-            console.error('authController.register error:', error && error.stack ? error.stack : error);
-            if (typeof next === 'function') {
-                next(error);
-            } else {
-                // fallback: send generic error
-                res.status(500).json({ error: error.message || 'Internal error' });
-            }
+            next(error);
         }
     }
 

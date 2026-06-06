@@ -18,6 +18,7 @@ export default class AuthService {
         if (existing) {
             throw new AppError("Email ya registrado", 409);
         }
+
         const user = await this.userRepository.create(data);
         return {
             _id: user._id,
@@ -33,10 +34,12 @@ export default class AuthService {
         if (!user) {
             throw new AppError("Credenciales inválidas", 401);
         }
+
         const isMatch = await user.matchPassword(password);
         if (!isMatch) {
             throw new AppError("Credenciales inválidas", 401);
         }
+
         return {
             _id: user._id,
             name: user.name,

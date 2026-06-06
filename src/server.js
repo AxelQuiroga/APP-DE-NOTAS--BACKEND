@@ -17,12 +17,6 @@ app.use(cors({
 
 app.use(express.json())
 
-// Request logger (temporal, para debug)
-app.use((req, res, next) => {
-    console.log('▶', req.method, req.url, 'body:', req.body);
-    next();
-});
-
 app.use("/api/auth", authRouter)
 app.use("/api/notes",notesRouter)
 
